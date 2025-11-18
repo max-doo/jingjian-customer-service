@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>页面重定向中...</title>
+    <meta http-equiv="refresh" content="0; url=/jingjian-customer-service/" />
+    <script>
+      ;(() => {
+        const REDIRECT_STORAGE_KEY = '__GH_PAGES_REDIRECT__'
+        const basePath = '/jingjian-customer-service'
+        const redirectPath = window.location.pathname + window.location.search + window.location.hash
+        try {
+          sessionStorage.setItem(REDIRECT_STORAGE_KEY, redirectPath)
+        } catch (error) {
+          console.warn('无法写入重定向信息', error)
+        }
+        if (!window.location.pathname.startsWith(basePath)) {
+          window.location.replace(basePath + '/')
+          return
+        }
+        window.location.replace(basePath + '/')
+      })()
+    </script>
+  </head>
+  <body>
+    <p>正在跳转，请稍候...</p>
+  </body>
+</html>
+

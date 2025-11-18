@@ -50,7 +50,7 @@ function Home() {
                   to="/admin"
                   className="text-white text-base bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-full font-semibold transition-colors text-sm"
                 >
-                  点击查看完整页面
+                  点击全屏预览
                 </Link>
               </div>
               <div className="text-gray-700">
@@ -59,8 +59,7 @@ function Home() {
                   <li>在 会员》会员管理 下新增功能【会员反馈】</li>
                   <li>包含【反馈记录】、【设置】两个标签页</li>
                   <li>反馈记录的操作中，门店工作人员处理这条反馈后点击【已处理】按钮，将反馈状态改为【已处理】</li>
-                  <li>在设置中，可设置反馈方式，通过【微信/企微客服】、【留言反馈】的开关控制C端小程序【联系客服】和【我要反馈】按钮的显隐</li>
-                  <li>可在富文本编辑框中输入常见问题FAQ，小程序可识别Markdown格式，转化为列表显示</li>
+                  <li>在设置中，可设置反馈方式，通过【微信/企微客服】、【留言反馈】的开关控制C端小程序【联系客服】和【我要反馈】卡片的显隐</li>
                 </ul>
               </div>
             </div>
@@ -82,7 +81,7 @@ function Home() {
                   to="/customer"
                   className="text-white text-base bg-orange-600 hover:bg-orange-700 px-4 py-2 rounded-full font-semibold transition-colors text-sm"
                 >
-                  点击查看完整页面
+                  点击全屏预览
                 </Link>
               </div>
               <div className="text-gray-700">

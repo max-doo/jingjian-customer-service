@@ -168,7 +168,7 @@ function CustomerApp() {
         </div>
 
         {/* 底部导航 */}
-        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-lg">
+        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-lg">
           <div className="flex justify-around items-center py-1">
             <button
               onClick={() => setActiveTab('home')}

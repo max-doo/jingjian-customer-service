@@ -6,7 +6,6 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table'
-import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { getFAQsAsHTML } from '../../mock/faqData'
 import { 
@@ -296,6 +295,7 @@ function CustomerFeedback() {
   }))
   const [faqContent, setFaqContent] = useState(getFAQsAsHTML())
   const [qrPreview, setQrPreview] = useState('')
+  const [qrDescription, setQrDescription] = useState('长按二维码添加客服微信')
   const uploadInputRef = useRef(null)
   const [saveResult, setSaveResult] = useState(null)
 
@@ -336,6 +336,9 @@ function CustomerFeedback() {
       if (parsed.faqContent) {
         setFaqContent(parsed.faqContent)
       }
+      if (parsed.qrDescription) {
+        setQrDescription(parsed.qrDescription)
+      }
     } catch (error) {
       console.error('加载客服配置失败', error)
     }
@@ -353,6 +356,7 @@ function CustomerFeedback() {
       const payload = {
         feedbackMethods,
         faqContent,
+        qrDescription,
         updatedAt: Date.now(),
       }
       window.localStorage.setItem(
@@ -370,7 +374,7 @@ function CustomerFeedback() {
         message: '保存失败，请稍后重试。',
       })
     }
-  }, [faqContent, feedbackMethods])
+  }, [faqContent, feedbackMethods, qrDescription])
 
   const closeSaveResult = useCallback(() => {
     setSaveResult(null)
@@ -569,17 +573,24 @@ function CustomerFeedback() {
           <>
             {/* 设置页面 */}
             <div className="flex-1 overflow-auto">
-              <div className="max-w-4xl">
+              <div className="max-w-3xl">
                 {/* 反馈方式 + 保存 */}
-                <div className="mb-4 border-b border-gray-200 pb-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-base font-medium text-gray-700">反馈方式（可多选）</h3>
-                    <button 
-                      onClick={handleSaveSettings}
-                      className="px-6 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition-colors"
-                    >
-                      保存
-                    </button>
+                <div className="mb-4">
+                  <div className="mb-2">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-base font-medium text-gray-700">反馈方式设置</h3>
+                      <button 
+                        onClick={handleSaveSettings}
+                        className="px-6 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition-colors"
+                      >
+                        保存
+                      </button>
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      说明：默认开启留言反馈功能，配置更改之后需保存方可生效。可添加二维码说明，默认为：长按二维码添加客服微信。
+                      <br />
+                      须在 线上&gt;小程序管理&gt;小程序装饰&gt;我的&gt;服务板块 中开启【客服与反馈】功能入口的显示，会员方可使用反馈功能。
+                    </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-8">
                     <ToggleSwitch
@@ -595,7 +606,7 @@ function CustomerFeedback() {
                   </div>
 
                   {/* 上传二维码 */}
-                  <div className="mt-4">
+                  <div className="mt-8">
                     <input
                       type="file"
                       accept="image/*"
@@ -605,7 +616,7 @@ function CustomerFeedback() {
                     />
                     <div
                       onClick={() => uploadInputRef.current?.click()}
-                      className="w-28 h-28 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-3xl text-gray-300 cursor-pointer hover:border-blue-400 hover:text-blue-400 transition-colors"
+                      className="w-48 h-48 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-3xl text-gray-300 cursor-pointer hover:border-blue-400 hover:text-blue-400 transition-colors"
                     >
                       {qrPreview ? (
                         <img src={qrPreview} alt="微信/企微二维码" className="w-full h-full object-cover rounded-lg" />
@@ -615,36 +626,27 @@ function CustomerFeedback() {
                     </div>
                     <p className="text-sm text-gray-600 mt-3">上传微信/企微二维码</p>
                   </div>
-                </div>
-
-                {/* 常见问题 */}
-                <div className="mb-6">
-                  <h3 className="text-base font-medium text-gray-700 mb-4">常见问题FAQ</h3>
-                  <div className=" rounded-lg overflow-hidden bg-white" style={{ minHeight: '400px' }}>
-                    <ReactQuill
-                      value={faqContent}
-                      onChange={setFaqContent}
-                      placeholder="请输入常见问题内容..."
-                      style={{ height: '400px' }}
-                      modules={{
-                        toolbar: [
-                          [{ 'header': [1, 2, 3, false] }],
-                          ['bold', 'italic', 'underline', 'strike'],
-                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                          [{ 'color': [] }, { 'background': [] }],
-                          ['link', 'image'],
-                          ['clean']
-                        ]
-                      }}
-                      formats={[
-                        'header',
-                        'bold', 'italic', 'underline', 'strike',
-                        'list', 'bullet',
-                        'color', 'background',
-                        'link', 'image'
-                      ]}
-                    />
-                  </div>
+                  {/* 二维码说明 */}
+                  <div className="mt-8">
+                      <label className="block text-sm text-gray-800 mb-2">二维码说明</label>
+                      <textarea
+                        value={qrDescription}
+                        onChange={(e) => {
+                          const value = e.target.value
+                          if (value.length <= 200) {
+                            setQrDescription(value)
+                          }
+                        }}
+                        placeholder="请输入二维码说明"
+                        maxLength={200}
+                        rows={3}
+                        className="w-full h-32 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-600 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-gray-300 resize-none overflow-auto"
+                        style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}
+                      />
+                      <p className="text-xs text-gray-400 mt-1 text-right">
+                        {qrDescription.length}/200
+                      </p>
+                    </div>
                 </div>
               </div>
             </div>

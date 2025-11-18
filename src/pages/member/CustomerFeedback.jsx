@@ -365,7 +365,7 @@ function CustomerFeedback() {
       )
       setSaveResult({
         type: 'success',
-        message: '保存成功，客服端入口将按照新设置显示。',
+        message: '保存成功，C端小程序【客服与反馈】页面将按照新设置显示。',
       })
     } catch (error) {
       console.error('保存客服配置失败', error)
